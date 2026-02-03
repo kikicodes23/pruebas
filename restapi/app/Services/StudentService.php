@@ -14,7 +14,7 @@ class StudentService{
     public function getAllStudents($perPage){
         $getAllStudents = $this->studentRepository->getAllStudents($perPage);
 
-        if($getAllStudents->isEmpty()) return null;
+        if(!$getAllStudents) return null;
 
         return $getAllStudents;
     }
@@ -22,7 +22,7 @@ class StudentService{
     public function getStudentById($id){
         $getOneStudent = $this->studentRepository->getStudentById($id);
 
-        if($getOneStudent->isEmpty()) return null;
+        if(!$getOneStudent) return null;
 
         return $getOneStudent;
     }
@@ -62,7 +62,7 @@ class StudentService{
 
         $students = $this->studentRepository->filterStudents($term, $perPage);
 
-        if ($students->isEmpty()) {
+        if (!$students) {
             throw new \Exception("NoResultsFound");
         }
 
