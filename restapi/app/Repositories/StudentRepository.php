@@ -29,6 +29,7 @@ class StudentRepository{
         $student = $this->getStudentById($id);
 
         $student->fill($data);
+        $student->save();
         return $student;
     }
 

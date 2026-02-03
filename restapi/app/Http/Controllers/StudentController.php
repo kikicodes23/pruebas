@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\StudentService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Validator;
 
 class StudentController extends Controller{
@@ -18,40 +19,40 @@ class StudentController extends Controller{
         $perPage = $request->query('per_page', 10);
         $term = $request->query('search');
 
-        if (!$term) {
-            try {
-                $students = $this->studentService->getAllStudents($perPage, $term);
-
-                if (!$students) {
-                    return response()->json(['message' => 'No results found'], 404);
-                }
-
-                return response()->json([
-                    'message' => 'Search successful',
-                    'data' => $students
-                ], 200);
-
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Search error'], 500);
-            }
-        }
-
         if (!is_numeric($perPage) || $perPage <= 0) {
             $perPage = 10;
         }
 
-        $students = $this->studentService->getAllStudents($perPage, $term);
+        if (!$term) {
+            $students = $this->studentService->getAllStudents($perPage, $term);
 
-        if (is_null($students)) {
+            if (is_null($students)) {
+                return response()->json([
+                    'message' => 'No students found'
+                ], 404);
+            }
+
             return response()->json([
-                'message' => 'No students found'
-            ], 404);
+                'message' => 'Students retrieved successfully',
+                'data' => $students
+            ], 200);
         }
 
-        return response()->json([
-            'message' => 'Students retrieved successfully',
-            'data' => $students
-        ], 200);
+        try {
+            $students = $this->studentService->getAllStudents($perPage, $term);
+
+            if (!$students) {
+                return response()->json(['message' => 'No results found'], 404);
+            }
+
+            return response()->json([
+                'message' => 'Search successful',
+                'data' => $students
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Search error'], 500);
+        }
     }
 
     // Traer un estudiante por ID
@@ -104,10 +105,17 @@ class StudentController extends Controller{
     // Actualizar un estudiante existente
     public function updateStudent(Request $request, $id){
         $validator = Validator::make($request->all(), [
-            'carnet' => 'sometimes|unique:students',
+            'carnet' => [
+                'sometimes',
+                Rule::unique('students', 'carnet')->ignore($id),
+            ],
             'name' => 'sometimes',
             'lastname' => 'sometimes',
-            'email' => 'sometimes|email|unique:students,email',
+            'email' => [
+                'sometimes',
+                'email',
+                Rule::unique('students', 'email')->ignore($id),
+            ],
             'career' => 'sometimes',
         ]);
 

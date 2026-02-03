@@ -14,26 +14,26 @@ class StudentService{
     public function getAllStudents($perPage, $term){
 
         if(!$term){
-            $term = trim($term);
+            $getAllStudents = $this->studentRepository->getAllStudents($perPage, $term);
 
-            if(empty($term)) {
-                throw new \Exception("EmptySearchTerm");
-            }
+            if(!$getAllStudents) return null;
 
-            $students = $this->studentRepository->getAllStudents($perPage, $term);
-
-            if (!$students) {
-                throw new \Exception("NoResultsFound");
-            }
-
-            return $students;
+            return $getAllStudents;
         }
 
-        $getAllStudents = $this->studentRepository->getAllStudents($perPage, $term);
+        $term = trim($term);
 
-        if(!$getAllStudents) return null;
+        if(empty($term)) {
+            throw new \Exception("EmptySearchTerm");
+        }
 
-        return $getAllStudents;
+        $students = $this->studentRepository->getAllStudents($perPage, $term);
+
+        if (!$students) {
+            throw new \Exception("NoResultsFound");
+        }
+
+        return $students;
     }
 
     public function getStudentById($id){
