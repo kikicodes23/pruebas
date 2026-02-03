@@ -81,16 +81,7 @@ docker run --rm \
   composer install --ignore-platform-reqs
 ```
 
-- **Windows (Powershell):**
-```powershell
-docker run --rm `
-    -v "${PWD}:/var/www/html" `
-    -w /var/www/html `
-    laravelsail/php84-composer:latest `
-    composer install --ignore-platform-reqs
-```
-
-3. En la raíz del proyecto crear un archivo `.env` con el siguiente contenido:
+1. En la raíz del proyecto crear un archivo `.env` con el siguiente contenido:
 ```bash
 APP_NAME=Laravel
 APP_ENV=local
