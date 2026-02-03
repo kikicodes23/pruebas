@@ -7,13 +7,14 @@ use App\Models\Student;
 class StudentRepository{
 
     public function getAllStudents($perPage, $term){
-        if(!$term)
+        if (is_null($term) || empty($term)) {
             return Student::paginate($perPage);
+        }
 
         return Student::where(function ($query) use ($term) {
-        $query->where('name', 'LIKE', "%{$term}%")
-                ->orWhere('lastname', 'LIKE', "%{$term}%")
-                ->orWhere('carnet', 'LIKE', "%{$term}%");
+            $query->where('name', 'LIKE', "%{$term}%")
+                    ->orWhere('lastname', 'LIKE', "%{$term}%")
+                    ->orWhere('carnet', 'LIKE', "%{$term}%");
         })->paginate($perPage);
     }
 
