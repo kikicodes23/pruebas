@@ -10,4 +10,8 @@ class RegisterRepository{
                         ->with(['subject', 'semester']) //Esta parte nos ayuda a traer la info completa
                         ->get();
     }
+
+    public function createRegister($data){
+        return Register::create($data);
+    }
 }

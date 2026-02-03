@@ -18,4 +18,8 @@ class RegisterService{
 
         return $registers;
     }
+
+    public function createRegister($data){
+        return $this->registerRepository->createRegister($data);
+    }
 }
