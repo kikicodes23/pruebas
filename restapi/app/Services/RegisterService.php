@@ -7,7 +7,7 @@ use App\Repositories\RegisterRepository;
 class RegisterService{
     protected $registerRepository;
 
-    public function __contructor(RegisterRepository $registerRepository){
+    public function __construct(RegisterRepository $registerRepository){
         $this->registerRepository = $registerRepository;
     }
 
