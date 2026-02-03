@@ -13,6 +13,7 @@ class RegisterController extends Controller{
         $this->registerService = $registerService;
     }
 
+    // Traer todos los registros de un estudiante por su ID
     public function getAllStudentRegisters($studentId){
         $registers = $this->registerService->getAllStudentRegisters($studentId);
 
@@ -28,6 +29,7 @@ class RegisterController extends Controller{
         ], 200);
     }
 
+    // Crear un nuevo registro
     public function storeRegister(Request $request){
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|exists:students,id',
@@ -56,5 +58,20 @@ class RegisterController extends Controller{
             'message' => 'Register created successfully',
             'data'=> $register
         ], 200);
+    }
+
+    // Descargar el transcript académico en PDF
+    public function downloadTranscript($studentId)
+    {
+        $pdf = $this->registerService->generateTranscript($studentId);
+
+        if (is_null($pdf)) {
+            return response()->json([
+                'message' => 'No academic records found for this student.'
+            ], 404);
+        }
+
+        // Stream the PDF to the browser (opens print preview)
+        return $pdf->stream('academic_transcript.pdf');
     }
 }

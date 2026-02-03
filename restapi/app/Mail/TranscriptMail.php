@@ -22,7 +22,7 @@ class TranscriptMail extends Mailable
     public function build()
     {
         return $this->subject('Academic Transcript - ' . $this->studentName)
-                    ->view('emails.transcript_body') // Create a simple view for the email body
+                    ->view('emails.transcript_body')
                     ->attachData($this->pdf->output(), 'transcript.pdf', [
                         'mime' => 'application/pdf',
                     ]);
