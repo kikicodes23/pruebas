@@ -10,7 +10,6 @@
             color: #333;
         }
 
-        /* Estilos del Encabezado con Logo */
         .header-container {
             width: 100%;
             margin-bottom: 30px;
@@ -18,19 +17,18 @@
             padding-bottom: 10px;
         }
         .logo {
-            width: 80px; /* Ajusta el tamaño del logo aquí */
+            width: 80px;
             float: left;
             margin-right: 20px;
         }
         .header-text {
-            overflow: hidden; /* Para que el texto no rodee el logo incorrectamente */
+            overflow: hidden;
             text-align: center;
             padding-top: 10px;
         }
         .header-text h2 { margin: 0; font-size: 22px; text-transform: uppercase; }
         .header-text p { margin: 5px 0 0; font-size: 14px; font-weight: normal; }
 
-        /* Información del Estudiante */
         .student-info {
             width: 100%;
             margin-bottom: 20px;
@@ -41,7 +39,6 @@
             vertical-align: top;
         }
 
-        /* Tabla de Notas */
         table.grades {
             width: 100%;
             border-collapse: collapse;
@@ -54,18 +51,15 @@
             font-size: 12px;
         }
 
-        /* TU COLOR PERSONALIZADO (Convertido a Hex para compatibilidad PDF) */
         table.grades th {
-            background-color: #9FAAF8;
+            background-color: #2b7fff;
             color: white;
             font-weight: bold;
             text-transform: uppercase;
         }
 
-        /* Centrar ciertas columnas */
         .text-center { text-align: center !important; }
 
-        /* Pie de página */
         .footer {
             position: fixed;
             bottom: 0;
