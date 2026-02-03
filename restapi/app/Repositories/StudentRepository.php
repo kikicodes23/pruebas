@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Student;
+use Illuminate\Support\Facades\DB;
 
 class StudentRepository{
 
@@ -12,8 +13,8 @@ class StudentRepository{
         }
 
         return Student::where(function ($query) use ($term) {
-            $query->where('name', 'LIKE', "%{$term}%")
-                    ->orWhere('lastname', 'LIKE', "%{$term}%")
+            $query->whereRaw('LOWER(name) LIKE ?', ["%{$term}%"])
+                    ->orWhereRaw('LOWER(lastname) LIKE ?', ["%{$term}%"])
                     ->orWhere('carnet', 'LIKE', "%{$term}%");
         })->paginate($perPage);
     }

@@ -21,8 +21,10 @@ class StudentService{
             }
         }
 
+        $termLower = strtolower($term);
+
         // El repositorio maneja tanto búsqueda como listado completo
-        return $this->studentRepository->getAllStudents($perPage, $term);
+        return $this->studentRepository->getAllStudents($perPage, $termLower);
     }
 
     public function getStudentById($id){
