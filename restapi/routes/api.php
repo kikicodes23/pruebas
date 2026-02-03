@@ -14,3 +14,9 @@ Route::delete('/students/{id}', [App\Http\Controllers\StudentController::class, 
 Route::get('/registers/{id}', [App\Http\Controllers\RegisterController::class, 'getAllStudentRegisters']);
 Route::post('/registers', [App\Http\Controllers\RegisterController::class, 'storeRegister']);
 Route::get('/students/{id}/transcript', [App\Http\Controllers\RegisterController::class, 'downloadTranscript']);
+
+// Subject Routes
+Route::get('/subjects', [App\Http\Controllers\SubjectController::class, 'index']);
+
+// Semester Routes
+Route::get('/semesters', [App\Http\Controllers\SemesterController::class, 'index
