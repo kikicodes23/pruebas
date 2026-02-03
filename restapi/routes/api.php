@@ -19,4 +19,4 @@ Route::get('/students/{id}/transcript', [App\Http\Controllers\RegisterController
 Route::get('/subjects', [App\Http\Controllers\SubjectController::class, 'index']);
 
 // Semester Routes
-Route::get('/semesters', [App\Http\Controllers\SemesterController::class, 'index
+Route::get('/semesters', [App\Http\Controllers\SemesterController::class, 'index']);
