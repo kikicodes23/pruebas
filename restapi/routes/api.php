@@ -13,7 +13,11 @@ Route::delete('/students/{id}', [App\Http\Controllers\StudentController::class, 
 //Register Routes
 Route::get('/registers/{id}', [App\Http\Controllers\RegisterController::class, 'getAllStudentRegisters']);
 Route::post('/registers', [App\Http\Controllers\RegisterController::class, 'storeRegister']);
-Route::get('/students/{id}/transcript', [App\Http\Controllers\RegisterController::class, 'downloadTranscript']);
+
+// Ruta para descargar el transcript en PDF
+Route::get('/students/{id}/transcript/view', [App\Http\Controllers\RegisterController::class, 'downloadTranscript']);
+// Ruta para disparar el correo
+Route::get('/students/{id}/transcript/email', [App\Http\Controllers\RegisterController::class, 'emailTranscript']);
 
 // Subject Routes
 Route::get('/subjects', [App\Http\Controllers\SubjectController::class, 'index']);

@@ -60,10 +60,9 @@ class RegisterController extends Controller{
         ], 200);
     }
 
-    // Descargar el transcript académico en PDF
     public function downloadTranscript($studentId)
     {
-        $pdf = $this->registerService->generateTranscript($studentId);
+        $pdf = $this->registerService->getTranscriptPdf($studentId);
 
         if (is_null($pdf)) {
             return response()->json([
@@ -71,7 +70,21 @@ class RegisterController extends Controller{
             ], 404);
         }
 
-        // Stream the PDF to the browser (opens print preview)
         return $pdf->stream('academic_transcript.pdf');
+    }
+
+    public function emailTranscript($studentId)
+    {
+        $sent = $this->registerService->sendTranscriptEmail($studentId);
+
+        if (!$sent) {
+            return response()->json([
+                'message' => 'Failed to send email. Either no records found or check server logs.'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Transcript sent successfully to student email.'
+        ], 200);
     }
 }
