@@ -1,61 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Academic Transcript</title>
-    <style>
-        body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .student-info { margin-bottom: 20px; width: 100%; }
-        .student-info td { padding: 5px; }
-        table.grades { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        table.grades th, table.grades td { border: 1px solid #333; padding: 8px; text-align: left; }
-        table.grades th { background-color: #f4f4f4; }
-        .footer { margin-top: 40px; font-size: 12px; text-align: center; color: #666; }
-    </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Academic Transcript</h2>
-        <p>Official Grade Report</p>
-    </div>
+    <p>Dear {{ $studentName }},</p>
 
-    <table class="student-info">
-        <tr>
-            <td><strong>Student:</strong> {{ $student->name }} {{ $student->lastname }}</td>
-            <td><strong>Student ID (Carnet):</strong> {{ $student->carnet }}</td>
-        </tr>
-        <tr>
-            <td><strong>Program/Career:</strong> {{ $student->career }}</td>
-            <td><strong>Date:</strong> {{ date('Y-m-d') }}</td>
-        </tr>
-    </table>
+    <p>Please find attached your official Academic Transcript in PDF format.</p>
 
-    <table class="grades">
-        <thead>
-            <tr>
-                <th>Semester</th>
-                <th>Code</th>
-                <th>Subject</th>
-                <th>Units (UV)</th>
-                <th>Grade</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($registers as $register)
-            <tr>
-                <td>{{ $register->semester->year }} - Term {{ $register->semester->semester_number }}</td>
-                <td>{{ $register->subject->code }}</td>
-                <td>{{ $register->subject->name }}</td>
-                <td>{{ $register->subject->uv }}</td>
-                <td>{{ $register->grade }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <p>If you have any questions regarding your grades, please contact the administration.</p>
 
-    <div class="footer">
-        <p>This document is generated automatically by the system.</p>
-    </div>
+    <br>
+    <p>Best regards,</p>
+    <p><strong>University Administration</strong></p>
 </body>
 </html>
