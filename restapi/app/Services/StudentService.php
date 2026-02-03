@@ -56,7 +56,7 @@ class StudentService{
         // Limpiamos espacios en blanco
         $term = trim($term);
 
-        if (empty($term)) {
+        if(empty($term)) {
             throw new \Exception("EmptySearchTerm");
         }
 

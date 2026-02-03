@@ -147,16 +147,16 @@ class StudentController extends Controller{
         $students = $this->studentService->searchStudents($term, $perPage);
 
         if (!$students) {
-            return response()->json(['message' => 'No se encontraron resultados'], 404);
+            return response()->json(['message' => 'No results found'], 404);
         }
 
         return response()->json([
-            'message' => 'Búsqueda exitosa',
+            'message' => 'Search successful',
             'data' => $students
         ], 200);
 
     } catch (\Exception $e) {
-        return response()->json(['error' => 'Error en la búsqueda'], 500);
+        return response()->json(['error' => 'Search error'], 500);
     }
 }
 }
