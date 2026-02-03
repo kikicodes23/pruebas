@@ -10,3 +10,5 @@ Route::get('/students/{id}', [App\Http\Controllers\StudentController::class, 'ge
 Route::patch('/students/{id}', [App\Http\Controllers\StudentController::class, 'updateStudent']);
 Route::delete('/students/{id}', [App\Http\Controllers\StudentController::class, 'destroyStudent']);
 
+//Register Routes
+Route::get('/registers/{id}', [App\Http\Controllers\RegisterController::class, 'getAllStudentRegisters']);
