@@ -12,28 +12,17 @@ class StudentService{
     }
 
     public function getAllStudents($perPage, $term){
+        // Si hay término de búsqueda, validar que no esté vacío
+        if ($term) {
+            $term = trim($term);
 
-        if(!$term){
-            $getAllStudents = $this->studentRepository->getAllStudents($perPage, $term);
-
-            if(!$getAllStudents) return null;
-
-            return $getAllStudents;
+            if (empty($term)) {
+                throw new \Exception("EmptySearchTerm");
+            }
         }
 
-        $term = trim($term);
-
-        if(empty($term)) {
-            throw new \Exception("EmptySearchTerm");
-        }
-
-        $students = $this->studentRepository->getAllStudents($perPage, $term);
-
-        if (!$students) {
-            throw new \Exception("NoResultsFound");
-        }
-
-        return $students;
+        // El repositorio maneja tanto búsqueda como listado completo
+        return $this->studentRepository->getAllStudents($perPage, $term);
     }
 
     public function getStudentById($id){

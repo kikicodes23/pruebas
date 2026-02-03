@@ -23,7 +23,7 @@ class StudentController extends Controller{
             $perPage = 10;
         }
 
-        if (!$term) {
+        try {
             $students = $this->studentService->getAllStudents($perPage, $term);
 
             if (is_null($students)) {
@@ -33,25 +33,15 @@ class StudentController extends Controller{
             }
 
             return response()->json([
-                'message' => 'Students retrieved successfully',
-                'data' => $students
-            ], 200);
-        }
-
-        try {
-            $students = $this->studentService->getAllStudents($perPage, $term);
-
-            if (!$students) {
-                return response()->json(['message' => 'No results found'], 404);
-            }
-
-            return response()->json([
-                'message' => 'Search successful',
+                'message' => $term ? 'Search successful' : 'Students retrieved successfully',
                 'data' => $students
             ], 200);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Search error'], 500);
+            if ($e->getMessage() === 'EmptySearchTerm') {
+                return response()->json(['error' => 'Search term cannot be empty'], 400);
+            }
+            return response()->json(['error' => 'Internal server error'], 500);
         }
     }
 
