@@ -1,62 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Academic Transcript</title>
+    <title>Constancia de Notas</title>
     <style>
-        /* Estilos simples para PDF */
-        body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; }
-        .header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .student-info { margin-bottom: 20px; width: 100%; }
-        .student-info td { padding: 4px; }
-        table.grades { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        table.grades th, table.grades td { border: 1px solid #333; padding: 8px; text-align: left; }
-        table.grades th { background-color: #f4f4f4; }
-        .footer { margin-top: 50px; font-size: 12px; text-align: center; color: #777; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            color: #333;
+        }
+
+        /* Estilos del Encabezado con Logo */
+        .header-container {
+            width: 100%;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        .logo {
+            width: 80px; /* Ajusta el tamaño del logo aquí */
+            float: left;
+            margin-right: 20px;
+        }
+        .header-text {
+            overflow: hidden; /* Para que el texto no rodee el logo incorrectamente */
+            text-align: center;
+            padding-top: 10px;
+        }
+        .header-text h2 { margin: 0; font-size: 22px; text-transform: uppercase; }
+        .header-text p { margin: 5px 0 0; font-size: 14px; font-weight: normal; }
+
+        /* Información del Estudiante */
+        .student-info {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        .student-info td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        /* Tabla de Notas */
+        table.grades {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table.grades th, table.grades td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        /* TU COLOR PERSONALIZADO (Convertido a Hex para compatibilidad PDF) */
+        table.grades th {
+            background-color: #9FAAF8;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Centrar ciertas columnas */
+        .text-center { text-align: center !important; }
+
+        /* Pie de página */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            font-size: 11px;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Academic Transcript</h2>
-        <p>Official Grade Report</p>
+
+    <div class="header-container">
+        <img src="{{ public_path('images/uca.png') }}" class="logo" alt="Logo UCA">
+
+        <div class="header-text">
+            <h2>Constancia de Notas</h2>
+            <p>Reporte Oficial de Calificaciones</p>
+        </div>
+        <div style="clear: both;"></div>
     </div>
 
     <table class="student-info">
         <tr>
-            <td><strong>Student:</strong> {{ $student->name }} {{ $student->lastname }}</td>
-            <td><strong>Student ID:</strong> {{ $student->carnet }}</td>
+            <td width="15%"><strong>Estudiante:</strong></td>
+            <td width="45%">{{ $student->name }} {{ $student->lastname }}</td>
+            <td width="15%"><strong>Carnet:</strong></td>
+            <td width="25%">{{ $student->carnet }}</td>
         </tr>
         <tr>
-            <td><strong>Program:</strong> {{ $student->career }}</td>
-            <td><strong>Date:</strong> {{ date('Y-m-d') }}</td>
+            <td><strong>Carrera:</strong></td>
+            <td>{{ $student->career }}</td>
+            <td><strong>Fecha:</strong></td>
+            <td>{{ date('d/m/Y') }}</td>
         </tr>
     </table>
 
     <table class="grades">
         <thead>
             <tr>
-                <th>Semester</th>
-                <th>Code</th>
-                <th>Subject</th>
-                <th>UV</th>
-                <th>Grade</th>
+                <th class="text-center">Ciclo</th>
+                <th class="text-center">Código</th>
+                <th>Materia</th>
+                <th class="text-center">UV</th>
+                <th class="text-center">Nota</th>
             </tr>
         </thead>
         <tbody>
             @foreach($registers as $register)
             <tr>
-                <td>{{ $register->semester->year }} - Term {{ $register->semester->semester_number }}</td>
-                <td>{{ $register->subject->code }}</td>
+                <td class="text-center">
+                    Ciclo {{ str_pad($register->semester->semester_number, 2, '0', STR_PAD_LEFT) }}/{{ $register->semester->year }}
+                </td>
+
+                <td class="text-center">{{ $register->subject->code }}</td>
                 <td>{{ $register->subject->name }}</td>
-                <td>{{ $register->subject->uv }}</td>
-                <td>{{ $register->grade }}</td>
+                <td class="text-center">{{ $register->subject->uv }}</td>
+                <td class="text-center"><strong>{{ number_format($register->grade, 1) }}</strong></td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
     <div class="footer">
-        <p>Generated by Academic System API.</p>
+        Generado por el sistema académico UCA
     </div>
+
 </body>
 </html>
