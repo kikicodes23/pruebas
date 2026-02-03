@@ -6,8 +6,15 @@ use App\Models\Student;
 
 class StudentRepository{
 
-    public function getAllStudents($perPage){
-        return Student::paginate($perPage);
+    public function getAllStudents($perPage, $term){
+        if(!$term)
+            return Student::paginate($perPage);
+
+        return Student::where(function ($query) use ($term) {
+        $query->where('name', 'LIKE', "%{$term}%")
+                ->orWhere('lastname', 'LIKE', "%{$term}%")
+                ->orWhere('carnet', 'LIKE', "%{$term}%");
+        })->paginate($perPage);
     }
 
     public function getStudentById($id){
@@ -28,13 +35,5 @@ class StudentRepository{
     public function deleteStudent($id){
         $student = $this->getStudentById($id);
         return $student->delete();
-    }
-
-    public function filterStudents($term, $perPage){
-        return Student::where(function ($query) use ($term) {
-        $query->where('name', 'LIKE', "%{$term}%")
-                ->orWhere('lastname', 'LIKE', "%{$term}%")
-                ->orWhere('carnet', 'LIKE', "%{$term}%");
-    })->paginate($perPage);
     }
 }

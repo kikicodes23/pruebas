@@ -9,25 +9,43 @@ use Validator;
 class StudentController extends Controller{
     protected $studentService;
 
-    public function __construct(StudentService $studentService)
-{
+    public function __construct(StudentService $studentService){
         $this->studentService = $studentService;
     }
 
     //Traer todos los estudiantes
     public function index(Request $request){
         $perPage = $request->query('per_page', 10);
+        $term = $request->query('search');
+
+        if (!$term) {
+            try {
+                $students = $this->studentService->getAllStudents($perPage, $term);
+
+                if (!$students) {
+                    return response()->json(['message' => 'No results found'], 404);
+                }
+
+                return response()->json([
+                    'message' => 'Search successful',
+                    'data' => $students
+                ], 200);
+
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Search error'], 500);
+            }
+        }
 
         if (!is_numeric($perPage) || $perPage <= 0) {
             $perPage = 10;
         }
 
-        $students = $this->studentService->getAllStudents($perPage);
+        $students = $this->studentService->getAllStudents($perPage, $term);
 
         if (is_null($students)) {
             return response()->json([
                 'message' => 'No students found'
-                ], 404);
+            ], 404);
         }
 
         return response()->json([
@@ -136,27 +154,4 @@ class StudentController extends Controller{
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
-
-    // Filtrar estudiantes
-    public function search(Request $request) {
-    // Capturamos 'search' y 'per_page' de la URL
-    $term = $request->query('search');
-    $perPage = $request->query('per_page', 10);
-
-    try {
-        $students = $this->studentService->searchStudents($term, $perPage);
-
-        if (!$students) {
-            return response()->json(['message' => 'No results found'], 404);
-        }
-
-        return response()->json([
-            'message' => 'Search successful',
-            'data' => $students
-        ], 200);
-
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Search error'], 500);
-    }
-}
 }

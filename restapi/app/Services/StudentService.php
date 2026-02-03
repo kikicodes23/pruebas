@@ -11,8 +11,25 @@ class StudentService{
         $this->studentRepository = $studentRepository;
     }
 
-    public function getAllStudents($perPage){
-        $getAllStudents = $this->studentRepository->getAllStudents($perPage);
+    public function getAllStudents($perPage, $term){
+
+        if(!$term){
+            $term = trim($term);
+
+            if(empty($term)) {
+                throw new \Exception("EmptySearchTerm");
+            }
+
+            $students = $this->studentRepository->getAllStudents($perPage, $term);
+
+            if (!$students) {
+                throw new \Exception("NoResultsFound");
+            }
+
+            return $students;
+        }
+
+        $getAllStudents = $this->studentRepository->getAllStudents($perPage, $term);
 
         if(!$getAllStudents) return null;
 
@@ -50,22 +67,5 @@ class StudentService{
         }
 
         return $this->studentRepository->deleteStudent($id);
-    }
-
-    public function searchStudents($term, $perPage) {
-        // Limpiamos espacios en blanco
-        $term = trim($term);
-
-        if(empty($term)) {
-            throw new \Exception("EmptySearchTerm");
-        }
-
-        $students = $this->studentRepository->filterStudents($term, $perPage);
-
-        if (!$students) {
-            throw new \Exception("NoResultsFound");
-        }
-
-        return $students;
     }
 }
