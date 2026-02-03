@@ -16,7 +16,7 @@ class StudentRepository{
         return Student::where(function ($query) use ($term) {
             $query->whereRaw('LOWER(name) LIKE ?', ["%{$term}%"])
                     ->orWhereRaw('LOWER(lastname) LIKE ?', ["%{$term}%"])
-                    ->orWhere('carnet', 'LIKE', "%{$term}%");
+                    ->orWhereRaw('LOWER(carnet) LIKE ?', ["%{$term}%"]);
         })
         ->orderBy('name', 'asc')
         ->paginate($perPage);
