@@ -6,26 +6,28 @@ use App\Services\StudentService;
 use Illuminate\Http\Request;
 use Validator;
 
-class StudentController extends Controller
-{
+class StudentController extends Controller{
     protected $studentService;
 
-    public function __construct(StudentService $studentService){
+    public function __construct(StudentService $studentService)
+{
         $this->studentService = $studentService;
     }
 
     //Traer todos los estudiantes
     public function index(Request $request){
-        $perPage = $request->validate([
-            'per_page' => 'integer|min:1|max:100'
-        ])['per_page'] ?? 10;
+        $perPage = $request->query('per_page', 10);
+
+        if (!is_numeric($perPage) || $perPage <= 0) {
+            $perPage = 10;
+        }
 
         $students = $this->studentService->getAllStudents($perPage);
 
         if (is_null($students)) {
             return response()->json([
                 'message' => 'No students found'
-            ], 404);
+                ], 404);
         }
 
         return response()->json([
