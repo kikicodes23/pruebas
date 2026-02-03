@@ -55,7 +55,7 @@ class StudentController extends Controller{
     // Crear un nuevo estudiante
     public function storeStudent(Request $request){
         $validator = Validator::make($request->all(), [
-            'carnet' => 'required|unique:students|integer',
+            'carnet' => 'required|unique:students',
             'name' => 'required',
             'lastname' => 'required',
             'email' => 'required|email|unique:students,email',
@@ -86,7 +86,7 @@ class StudentController extends Controller{
     // Actualizar un estudiante existente
     public function updateStudent(Request $request, $id){
         $validator = Validator::make($request->all(), [
-            'carnet' => 'sometimes|unique:students|integer',
+            'carnet' => 'sometimes|unique:students',
             'name' => 'sometimes',
             'lastname' => 'sometimes',
             'email' => 'sometimes|email|unique:students,email',
@@ -136,4 +136,27 @@ class StudentController extends Controller{
             return response()->json(['error' => 'Internal server error'], 500);
         }
     }
+
+    // Filtrar estudiantes
+    public function search(Request $request) {
+    // Capturamos 'search' y 'per_page' de la URL
+    $term = $request->query('search');
+    $perPage = $request->query('per_page', 10);
+
+    try {
+        $students = $this->studentService->searchStudents($term, $perPage);
+
+        if (!$students) {
+            return response()->json(['message' => 'No se encontraron resultados'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Búsqueda exitosa',
+            'data' => $students
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error en la búsqueda'], 500);
+    }
+}
 }

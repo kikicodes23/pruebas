@@ -29,4 +29,12 @@ class StudentRepository{
         $student = $this->getStudentById($id);
         return $student->delete();
     }
+
+    public function filterStudents($term, $perPage){
+        return Student::where(function ($query) use ($term) {
+        $query->where('name', 'LIKE', "%{$term}%")
+                ->orWhere('lastname', 'LIKE', "%{$term}%")
+                ->orWhere('carnet', 'LIKE', "%{$term}%");
+    })->paginate($perPage);
+    }
 }

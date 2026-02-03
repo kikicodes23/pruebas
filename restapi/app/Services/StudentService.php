@@ -51,4 +51,21 @@ class StudentService{
 
         return $this->studentRepository->deleteStudent($id);
     }
+
+    public function searchStudents($term, $perPage) {
+        // Limpiamos espacios en blanco
+        $term = trim($term);
+
+        if (empty($term)) {
+            throw new \Exception("EmptySearchTerm");
+        }
+
+        $students = $this->studentRepository->filterStudents($term, $perPage);
+
+        if ($students->isEmpty()) {
+            throw new \Exception("NoResultsFound");
+        }
+
+        return $students;
+    }
 }
