@@ -21,7 +21,7 @@ class TranscriptMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Academic Transcript - ' . $this->studentName)
+        return $this->subject('Sistema Académico UCA - ' . $this->studentName)
                     ->view('emails.transcript_body')
                     ->attachData($this->pdf->output(), 'transcript.pdf', [
                         'mime' => 'application/pdf',

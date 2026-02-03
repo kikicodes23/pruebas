@@ -42,8 +42,7 @@ class RegisterService{
         ];
     }
 
-    public function getTranscriptPdf($studentId)
-    {
+    public function getTranscriptPdf($studentId){
         $data = $this->preparePdfData($studentId);
 
         if (!$data) return null;
@@ -51,20 +50,20 @@ class RegisterService{
         return $data['pdf'];
     }
 
-    public function sendTranscriptEmail($studentId)
-    {
+    public function sendTranscriptEmail($studentId){
         $data = $this->preparePdfData($studentId);
 
-        if (!$data) return false; // No hay registros
+        if (!$data) return 'not_found';
 
         try {
             Mail::to($data['student']->email)
                 ->send(new TranscriptMail($data['pdf'], $data['student']->name));
 
-            return true; // Éxito
+            return 'success';
         } catch (\Exception $e) {
             Log::error("Error sending transcript email: " . $e->getMessage());
-            return false; // Hubo un error
+
+            return 'error';
         }
     }
 }

@@ -73,16 +73,22 @@ class RegisterController extends Controller{
         return $pdf->stream('academic_transcript.pdf');
     }
 
-    public function emailTranscript($studentId)
-    {
-        $sent = $this->registerService->sendTranscriptEmail($studentId);
+    public function emailTranscript($studentId){
+        $status = $this->registerService->sendTranscriptEmail($studentId);
 
-        if (!$sent) {
+        if ($status === 'not_found') {
             return response()->json([
-                'message' => 'Failed to send email. Either no records found or check server logs.'
+                'message' => 'Student not found or has no academic records.'
+            ], 404);
+        }
+
+        if ($status === 'error') {
+            return response()->json([
+                'message' => 'Failed to send email due to a server error. Check logs.'
             ], 500);
         }
 
+        // Éxito
         return response()->json([
             'message' => 'Transcript sent successfully to student email.'
         ], 200);
