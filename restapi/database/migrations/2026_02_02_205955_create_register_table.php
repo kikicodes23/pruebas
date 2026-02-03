@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('registers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects');
             $table->foreignId('semester_id')->constrained('semesters');
             $table->float('grade');
